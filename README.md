@@ -26,7 +26,7 @@ cd poc-popl-lite
 npm install
 ```
 
-### 2. Environment Configuration
+### 2. Environment Configuration (Optional)
 
 Create the environment files with the following content (Optional step: Provide if need to override):
 
