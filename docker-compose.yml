@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: popl_lite
+      MYSQL_USER: popluser
+      MYSQL_PASSWORD: poplpassword
+    ports:
+      - '3306:3306'
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - popl-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      PMA_USER: popluser
+      PMA_PASSWORD: poplpassword
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - '8080:80'
+    depends_on:
+      - db
+    networks:
+      - popl-network
+
+volumes:
+  db_data:
+
+networks:
+  popl-network:
+    driver: bridge 

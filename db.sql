@@ -1,0 +1,27 @@
+CREATE TABLE companies (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(256) NOT NULL,
+  CONSTRAINT name_length CHECK (CHAR_LENGTH(name) BETWEEN 1 AND 256)
+);
+
+CREATE TABLE contacts (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  company_id INT NOT NULL,
+  name VARCHAR(128) NOT NULL,
+  email VARCHAR(256) NOT NULL,
+  CONSTRAINT fk_company FOREIGN KEY (company_id) REFERENCES companies(id) ON DELETE CASCADE,
+  CONSTRAINT name_length CHECK (CHAR_LENGTH(name) BETWEEN 1 AND 128),
+  CONSTRAINT email_length CHECK (CHAR_LENGTH(email) BETWEEN 1 AND 256),
+  CONSTRAINT email_format CHECK (email REGEXP '^[^@]+@[^@]+\.[^@]+$')
+);
+
+CREATE TABLE activities (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  contact_id INT NOT NULL,
+  name VARCHAR(256),
+  timestamp DATETIME NOT NULL,
+  note VARCHAR(512) NOT NULL,
+  CONSTRAINT fk_contact FOREIGN KEY (contact_id) REFERENCES contacts(id) ON DELETE CASCADE,
+  CONSTRAINT name_length CHECK (name IS NULL OR CHAR_LENGTH(name) BETWEEN 1 AND 256),
+  CONSTRAINT note_length CHECK (CHAR_LENGTH(note) BETWEEN 1 AND 512)
+); 
