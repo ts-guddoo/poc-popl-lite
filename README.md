@@ -9,25 +9,29 @@ A stateless Express.js + TypeORM + MySQL service for managing Companies, Contact
 - **npm**: For package management
 
 ## Features
+
 - Companies: CRUD operations
 - Contacts: CRUD operations (each belongs to a Company)
 - Activities: Create and list by Contact/Company
 - Validation for all fields and relationships
-- **phpMyAdmin** for database browsing at `http://localhost:8080`
+- **phpMyAdmin** for database browsing at `http://localhost:12000`
 
 ## Setup Instructions
 
 ### 1. Clone and Install
+
 ```bash
-git clone <repo-url>
-cd popl-lite
+git clone https://github.com/ts-guddoo/poc-popl-lite.git
+cd poc-popl-lite
 npm install
 ```
 
 ### 2. Environment Configuration
-Create the environment files with the following content:
+
+Create the environment files with the following content (Optional step: Provide if need to override):
 
 **Create `.env`:**
+
 ```bash
 # Database Configuration
 DB_HOST=localhost
@@ -49,28 +53,36 @@ TYPEORM_LOGGING=false
 ```
 
 ### 3. Start MySQL with Docker Compose
+
 ```bash
 docker-compose up -d
 ```
+
 This will start:
+
 - **MySQL 8.0** on port 3306
-- **phpMyAdmin** on port 8080 (login: `popluser`/`poplpassword`)
+- **phpMyAdmin** on port 12000 (login: `popluser`/`poplpassword`)
 
 ### 4. Create Database Schema (Optional)
+
 Once MySQL is running, you can apply the schema manually:
+
 ```bash
 mysql -h 127.0.0.1 -u popluser -ppoplpassword popl_lite < db.sql
 ```
-*Note: TypeORM will auto-create tables with `synchronize: true`*
+
+_Note: TypeORM will auto-create tables with `synchronize: true`_
 
 ### 5. Start the Server
 
 **Development mode:**
+
 ```bash
 npm run dev
 ```
 
 **Production mode:**
+
 ```bash
 npm run build
 npm start
@@ -79,21 +91,26 @@ npm start
 ## API Testing with Postman
 
 ### Import Postman Collection
+
 1. **Open Postman**
 2. **Click "Import"** (top left)
 3. **Drag & drop** the `Popl-Lite-API.postman_collection.json` file
 4. **Or click "Upload Files"** and select the file
 
 ### Testing Flow
+
 1. **Start with Companies:**
+
    - Create a company first
    - Note the company ID from the response
 
 2. **Then create Contacts:**
+
    - Use the company ID from step 1
    - Note the contact ID from the response
 
 3. **Finally create Activities:**
+
    - Use the contact ID from step 2
 
 4. **Test all endpoints:**
@@ -104,28 +121,32 @@ npm start
    - Test error cases
 
 ### Environment Variables in Postman
+
 The collection uses `{{baseUrl}}` variable set to `http://localhost:3000`
 
 ## API Overview
 
 ### Companies
-- `POST   /companies`         - Create company
-- `GET    /companies/:id`     - Get company by id
-- `PUT    /companies/:id`     - Update company
-- `DELETE /companies/:id`     - Delete company
-- `GET    /companies`         - List all companies
+
+- `POST   /companies` - Create company
+- `GET    /companies/:id` - Get company by id
+- `PUT    /companies/:id` - Update company
+- `DELETE /companies/:id` - Delete company
+- `GET    /companies` - List all companies
 - `GET    /companies/:companyId/activities` - List activities for a company
 
 ### Contacts
-- `POST   /contacts`          - Create contact (requires `companyId`)
-- `GET    /contacts/:id`      - Get contact by id
-- `PUT    /contacts/:id`      - Update contact
-- `DELETE /contacts/:id`      - Delete contact
-- `GET    /contacts`          - List all contacts
+
+- `POST   /contacts` - Create contact (requires `companyId`)
+- `GET    /contacts/:id` - Get contact by id
+- `PUT    /contacts/:id` - Update contact
+- `DELETE /contacts/:id` - Delete contact
+- `GET    /contacts` - List all contacts
 - `GET    /contacts/:contactId/activities` - List activities for a contact
 
 ### Activities
-- `POST   /activities`        - Create activity (requires `contactId`, `timestamp`, `note`)
+
+- `POST   /activities` - Create activity (requires `contactId`, `timestamp`, `note`)
 
 ## Available Scripts
 
@@ -136,7 +157,8 @@ The collection uses `{{baseUrl}}` variable set to `http://localhost:3000`
 
 ## Database Browsing
 
-Access **phpMyAdmin** at `http://localhost:8080`:
+Access **phpMyAdmin** at `http://localhost:12000`:
+
 - **Username:** `popluser`
 - **Password:** `poplpassword`
 - **Database:** `popl_lite`
@@ -146,25 +168,30 @@ Browse tables, execute queries, and manage data through the web interface.
 ## Development vs Production
 
 ### Development Mode
+
 ```bash
 npm run dev
 ```
+
 - Hot reload enabled
 - TypeORM synchronize: true
 - Detailed logging
 - Development environment
 
 ### Production Mode
+
 ```bash
 npm run build
 npm start
 ```
+
 - Compiled TypeScript
 - TypeORM synchronize: false (recommended)
 - Minimal logging
 - Production environment
 
 **For production, update your `.env`:**
+
 ```bash
 NODE_ENV=production
 TYPEORM_SYNCHRONIZE=false
@@ -172,11 +199,13 @@ TYPEORM_LOGGING=false
 ```
 
 ## How it was tested
+
 - Manual testing with Postman collection for all endpoints
 - Validation and error cases checked
 - Database operations tested via phpMyAdmin
 
 ## Known Limitations / Assumptions
+
 - No authentication or authorization
 - No pagination on list endpoints
 - No soft deletes
@@ -185,6 +214,7 @@ TYPEORM_LOGGING=false
 - Email validation uses class-validator's `@IsEmail` (not full RFC compliance)
 
 ## Project Structure
+
 ```
 src/
 ├── models/          # TypeORM entities
@@ -196,4 +226,5 @@ src/
 ```
 
 ## Environment Variables
-See the environment file content above for all available configuration options. 
+
+See the environment file content above for all available configuration options.
